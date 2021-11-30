@@ -1,3 +1,16 @@
+//Problem 1 
+describe
+summarize 
+
+sum if birthyr==1958
+sum if birthyr==1959
+sum if birthyr==1960
+sum if birthyr==1961
+sum if birthyr==1962
+
+//Problem 2
+reg crimerate conscripted murder threat arms drug property whitecollar sexual, r
+
 // Problem 3
 gen eligible = 0
 replace eligible = 1 if birthyr == 1958 & draftnumber >= 175
