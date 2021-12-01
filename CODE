@@ -29,3 +29,22 @@ di(0.0016751/0.6564878)
 */
 
 ivregress 2sls crimerate (conscripted = eligible) murder drug threat arms whitecollar property sexual, r
+
+/*
+10.
+*/
+
+*(a)
+
+
+
+
+*(b)
+gen distance = 0
+replace distance = draftnumber - 175 if birthyr == 1958
+replace distance = draftnumber - 320 if birthyr == 1959
+replace distance = draftnumber - 341 if birthyr == 1960
+replace distance = draftnumber - 350 if birthyr == 1961
+replace distance = draftnumber - 320 if birthyr == 1962
+
+drop if (abs(distance) > 100)
