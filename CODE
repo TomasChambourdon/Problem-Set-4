@@ -23,3 +23,9 @@ reg crimerate eligible, r
 */
 
 di(0.0016751/0.6564878)
+
+/*
+7. Confirm your calculations by running a two-stage least squares regression. Are there differences between the 2SLS (question 7) and OLS (question 2) results? Why or why not?
+*/
+
+ivregress 2sls crimerate (conscripted = eligible) murder drug threat arms whitecollar property sexual, r
