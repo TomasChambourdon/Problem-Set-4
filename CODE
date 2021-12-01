@@ -17,3 +17,9 @@ reg conscripted eligible, r
 */
 
 reg crimerate eligible, r
+
+/*
+6. Based on your results for questions (4) and (5), calculate the instrumental variables estimate of the effect of conscription on crimerate. You need only calculate a point estimate, not standard errors.
+*/
+
+di(0.0016751/0.6564878)
