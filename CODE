@@ -1,4 +1,26 @@
-// Problem 3
+/*
+1. Describe the data. Are there differences in conscription rates or crime rates across birth years?
+*/
+
+sum if birthyr == 1958 // mean conscription rate = .5764233, mean crimerate = .0689771
+sum if birthyr == 1959 // mean conscription rate = .4617756, mean crimerate = .0679747
+sum if birthyr == 1960 // mean conscription rate = .4670117, mean crimerate = .0690050
+sum if birthyr == 1961 // mean conscription rate = .5094383, mean crimerate = .0697981
+sum if birthyr == 1962 // mean conscription rate = .5009606, mean crimerate = .0705751
+
+
+/*
+2. Use OLS to estimate the relationship between conscription rates and crimerate, controlling for observable covariates. Does the results reflect the causal effect of conscription? Describe possible biases.
+*/
+
+reg crimerate conscripted birthyr argentine indigenous naturalized, r
+
+/*
+3. The lottery assigned a draft number to each last three ID digit combination, and the military then set a cutoff based on the needs of the military, such that all draft numbers at or above the cutoff were eligible for conscription. Based on the following cutoffs, code a variable that equals 1 if eligible, 0 if not:
+Year: 1958  1959  1960  1961  1962
+Cutoff: 175   320   341   350   320
+*/
+
 gen eligible = 0
 replace eligible = 1 if birthyr == 1958 & draftnumber >= 175
 replace eligible = 1 if birthyr == 1959 & draftnumber >= 320
@@ -10,7 +32,16 @@ replace eligible = 1 if birthyr == 1962 & draftnumber >= 320
 4. Estimate the “first stage” effect of eligibility on conscription.  Think carefully about the regression specification.  Do you need to control for birth year indicators?  Do you need to control for ethnic composition?
 */
 
-reg conscripted eligible, r
+gen birth1959 = 0
+gen birth1960 = 0
+gen birth1961 = 0
+gen birth1962 = 0
+
+replace birth1959 = 1 if birthyr == 1959
+replace birth1960 = 1 if birthyr == 1960
+replace birth1961 = 1 if birthyr == 1961
+replace birth1962 = 1 if birthyr == 1962
+reg conscripted eligible birth1959 birth1960 birth1961 birth1962, r // first stage with control years
 
 /*
 5. Estimate the “reduced form” effect of eligibility on crimerate. Does this result reflect the causal effect of conscription?
@@ -22,13 +53,13 @@ reg crimerate eligible, r
 6. Based on your results for questions (4) and (5), calculate the instrumental variables estimate of the effect of conscription on crimerate. You need only calculate a point estimate, not standard errors.
 */
 
-di(0.0016751/0.6564878)
+di(0.0016751/0.6587458)
 
 /*
 7. Confirm your calculations by running a two-stage least squares regression. Are there differences between the 2SLS (question 7) and OLS (question 2) results? Why or why not?
 */
 
-ivregress 2sls crimerate (conscripted = eligible) murder drug threat arms whitecollar property sexual, r
+ivregress 2sls crimerate (conscripted = eligible) birthyr argentine indigenous naturalized, r
 
 /*
 10.
@@ -36,8 +67,7 @@ ivregress 2sls crimerate (conscripted = eligible) murder drug threat arms whitec
 
 *(a)
 
-
-
+scatter conscripted draftnumber, by(birthyr)
 
 *(b)
 gen distance = 0
