@@ -48,3 +48,23 @@ replace distance = draftnumber - 350 if birthyr == 1961
 replace distance = draftnumber - 320 if birthyr == 1962
 
 drop if (abs(distance) > 100)
+
+*(c) Draw a scatter plot of the conscripted against distance. Do your results suggest that crossing the cutoff raises conscription?
+
+scatter conscripted distance
+
+*(d) Draw a scatter plot of the crimerate against distance. Do your results suggest that crossing the cutoff raises conscription?
+
+scatter crimerate distance
+
+*(e) Now run a two-stage least squares regression to estimate the effect of conscripted on crimerate in a regression discontinuity design. Use local linear regression with a bandwidth of 100. To allow the slopes to be different above and below the cutoff, first generate the interaction of distance with eligible: gen distanceXelig = distance*eligible. Then estimate: ivregress 2sls crimerate (conscripted=eligible) distance distanceXelig,r first. Explain the command, and interpret both the first- and second-stage results. Do the results confirm your interpretation of the scatter plots in parts (c) and (d) of the question?
+
+gen distanceXelig = distance*eligible
+ivregress 2sls crimerate (conscripted=eligible) distance distanceXelig,r
+
+*(f) Why do you think the regression discontinuity results are different from the results earlier in the problem set?
+
+
+
+
+translate pset4_log_file.smcl pset4_log_file.pdf, replace // turn logfile into a pdf to submit on Gradescope 
